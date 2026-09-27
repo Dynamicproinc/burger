@@ -8,7 +8,7 @@ use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\SSEController;
 
 use App\Livewire\Darktheme\Shop\Index as ShopIndex;
-use App\Livewire\spa\App\Shop;
+use App\Livewire\Spa\App\Shop;
 use App\Livewire\Spa\App\Cart;
 use App\Livewire\Spa\App\ShowProduct;
 use App\Livewire\Shop\Cart as Checkout;
