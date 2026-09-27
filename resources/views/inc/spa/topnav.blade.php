@@ -8,7 +8,7 @@
                         <div class="d-flex align-items-center">
                             <img src="{{ asset('images/logo.jpg') }}" alt="MBrothers-food.com"
                                 style="width: 50px; height:auto;" class="me-2">
-                            <span class="logo-text fw-bold">M Brothers Food</span>
+                            <span class="logo-text fw-bold">M Brothers Foodlll</span>
                         </div>
                     @else
                         <a class="btn btn-dark-theme fw-bolder me-3" href="#"
