@@ -18,10 +18,10 @@ class Shop extends Component
     {
 
 
-        $products = Product::query();
+        $products = Product::query()->where('status', 'active');
 
         if (!empty($this->selected_category_id)) {
-            $products->where('category_id', $this->selected_category_id)->where('status', 'active');
+            $products->where('category_id', $this->selected_category_id);
         }
 
         return view('livewire.spa.app.shop', [
