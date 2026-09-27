@@ -1,0 +1,523 @@
+<div>
+     <div>
+            @section('top_nav_title', __('Checkout'))
+            @section('title', __('Checkout -'))
+            @section('bg_color', __('bg-dark'))
+            @include('inc.spa.topnav')
+        </div>
+         <div class="safty-top"></div>
+    @if (session('cart', []) && count(session('cart', [])) > 0)
+        {{-- <div class="d-flex justify-content-between">
+
+            
+            <div class="px-3">
+                <h5 class="fw-bolder">{{ __('Order now') }}</h5>
+            </div>
+        </div> --}}
+        {{-- <div class="cou-switch">
+            
+        </div> --}}
+       <div class="">
+         <div class="row">
+            <div class="col-lg-6 order-2 order-lg-1">
+                <div class="p-3">
+                    <form wire:submit="saveOrder">
+                        <div class="row">
+                            <div class="col-lg-6 form-group">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="firstname"
+                                        placeholder="{{ __('First Name') }}" wire:model="first_name" disabled data-bs-theme="dark">
+                                    <label for="firstname">{{ __('First Name') }}</label>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 form-group">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="lastname"
+                                        placeholder="{{ __('Last Name') }}" wire:model="last_name" disabled>
+                                    <label for="lastname">{{ __('Last Name') }}</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <div class="form-floating mb-3">
+                                <input type="email" class="form-control" id="Email"
+                                    placeholder="{{ __('Email') }}" wire:model="email" disabled>
+                                <label for="Email">{{ __('Email') }}</label>
+                            </div>
+                        </div>
+                        <div class="form-group mb-3">
+                            <div class="form-floating mb-3">
+                                <input type="number" class="form-control @error('telephone') is-invalid @enderror"
+                                    id="telephone" placeholder="{{ __('Telephone') }}" wire:model="telephone">
+                                <label for="telephone">{{ __('Telephone') }}</label>
+                                @error('telephone')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="accord-area border mb-3">
+                            <div class="accord-item">
+                                <div class="acc-container">
+                                    <div class="">
+                                        <input class="form-check-input pm my-3 mx-2" type="radio" id="pmcard"
+                                            value="pickup" wire:model="order_type">
+                                        <label class="pm-check-label my-3" for="pmcard">
+                                            <span>{{ __('Pickup/Dine-in') }} - Velika Gorica</span>
+
+
+
+                                        </label>
+                                        <section class="acd-section border-top border-bottom">
+                                            <div>
+                                                {{--  --}}
+                                                <div class="map-container mb-3">
+                                                    <iframe
+                                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3276.280843386527!2d16.048545452072354!3d45.709555434488244!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47667fe21922b5b3%3A0xf18caa017255a3f7!2sM%20Brothers%20Food%20Truck!5e0!3m2!1sen!2shr!4v1776755615938!5m2!1sen!2shr"
+                                                        width="100%" height="100%" style="border:0;"
+                                                        allowfullscreen="" loading="lazy"
+                                                        referrerpolicy="no-referrer-when-downgrade"></iframe>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for=""
+                                                        class="mb-2 text-white">{{ __('Select Time (24-hour format)') }}
+                                                    </label>
+                                                    <input type="time"
+                                                        class="form-control @error('pickup_time') is-invalid @enderror mb-2"
+                                                        wire:model="pickup_time">
+                                                    @error('pickup_time')
+                                                        <small class="text-danger">{{ $message }}</small>
+                                                    @enderror
+                                                    <div>
+                                                        {{-- <span
+                                                            class="badge bg-info-subtle border border-info-subtle text-info-emphasis rounded-pill">
+                                                            {{ __('Orders can only be placed between 10:00 AM and 2:00 PM.') }}
+                                                        </span> --}}
+                                                        <div class="theme-badge mt-2">
+                                                            {{-- <i class="bi bi-info-circle-fill"></i> --}}
+                                                            <span>{{ __('Please arrive within 20 minutes of your scheduled pickup time.( Working hours are from 11:00  to 17:00. Mon - Fri )') }}</span>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </section>
+                                    </div>
+
+
+
+
+                                </div>
+
+                            </div>
+
+                            <div class="accord-item">
+                                <div class="acc-container">
+
+                                    <div class="">
+                                        <input class="form-check-input pm my-3 mx-2" name="payment_method"
+                                            type="radio" id="pmcod" value="delivery" wire:model="order_type"
+                                            @if ($grand_total < 69) disabled @endif>
+                                        <label class="pm-check-label my-3" for="pmcod">
+                                            {{ __('Delivery') }} <small
+                                                class="fw-bold">{{ __('(Only for orders above 70,00 €)') }}</small>
+
+
+                                        </label>
+                                        <section class="acd-section-h100 border-top">
+                                            <div>
+                                                <div class="mb-2">
+                                                    <span
+                                                        class="badge bg-warning-subtle border border-warning-subtle text-warning-emphasis rounded-pill">
+                                                        {{ __('We currently deliver within the Velika Gorica area only.') }}
+                                                    </span>
+                                                </div>
+                                                <div class="form-group mb-3">
+                                                    <div class="form-floating">
+                                                        <select class="form-select @error('city') is-invalid @enderror"
+                                                            id="floatingSelect" aria-label="fl-select-country"
+                                                            wire:model="city">
+                                                            <option value="">{{ __('Select') }}</option>
+                                                            @foreach ($cities as $item)
+                                                                <option value="{{ $item->id }}" selected>
+                                                                    {{ $item->city }}</option>
+                                                            @endforeach
+
+                                                        </select>
+                                                        <label for="floatingSelect">{{ __('City') }}</label>
+                                                    </div>
+                                                    @error('city')
+                                                        <small class="text-danger">{{ $message }}</small>
+                                                    @enderror
+
+                                                </div>
+                                                <div class="form-group mb-3">
+                                                    <div class="form-floating">
+                                                        <input type="text"
+                                                            class="form-control @error('address') is-invalid @enderror"
+                                                            id="Address" placeholder="{{ __('Address') }}"
+                                                            wire:model="address">
+                                                        <label for="Address">{{ __('Address') }}</label>
+                                                    </div>
+                                                    @error('address')
+                                                        <small class="text-danger">{{ $message }}</small>
+                                                    @enderror
+                                                </div>
+                                                <div class="form-group mb-3">
+                                                    <div class="form-floating">
+                                                        <input type="text"
+                                                            class="form-control @error('address_2') is-invalid @enderror"
+                                                            id="Address2" placeholder="{{ __('Address 2') }}"
+                                                            wire:model="address_2">
+                                                        <label
+                                                            for="Address2">{{ __('Appartment, Suite, etc. (Optional)') }}</label>
+                                                    </div>
+                                                    @error('address_2')
+                                                        <small class="text-danger">{{ $message }}</small>
+                                                    @enderror
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        wire:model="save_address" id="ckaddress">
+                                                    <label class="form-check-label text-white" for="ckaddress">
+                                                        {{ __('Save this address for future orders') }}
+                                                    </label>
+                                                </div>
+                                                {{-- <div class="row">
+                                                <div class="col-lg-6 form-group">
+                                                    <div class="form-floating mb-3">
+                                                        <input type="text" class="form-control" id="postal_code"
+                                                            placeholder="{{ __('Postal Code') }}">
+                                                        <label for="postal_code">{{ __('Postal Code') }}</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6 form-group">
+                                                    <div class="form-floating mb-3">
+                                                        <input type="text" class="form-control" id="city"
+                                                            placeholder="{{ __('City') }}">
+                                                        <label for="city">{{ __('City') }}</label>
+                                                    </div>
+                                                </div>
+                                            </div> --}}
+                                            </div>
+                                        </section>
+                                    </div>
+
+
+
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            @php
+                                $status = App\Models\ShopStatus::whereDate('closing_date', today())
+                                    ->where('status_name', 'closed')
+                                    ->first();
+                            $now = now()->setTimezone('Europe/Zagreb');
+                            $disabled_button = $status || ($now->isSaturday() && $now->format('H:i') > '11:58');
+                                  
+                               if($disabled_button) echo '<small class="text-danger"> Narudžbe se ne mogu izvršiti subotom nakon 12:00 sati </small>';
+                                
+                            @endphp
+                            <button
+                                class="btn btn-dark-theme btn-lg form-control @if ($disabled_button) disabled @endif"
+                                @if ($disabled_button) disabled @endif>
+
+                                <span class="spinner-border spinner-border-sm" wire:loading wire:target="saveOrder"
+                                    role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </span>
+                                {{ __('Place Your Order') }}
+                            </button>
+
+                            <div class="mt-2">
+                                <p class="text-muted small" style="font-size: 11px">
+                                    Klikom na <strong>Potvrdite narudžbu</strong> prihvaćate naše
+                                    <a href="/terms-of-use"><strong>Uvjeti korištenja</strong></a> i
+                                    <a href="/privacy-policy"><strong>Pravila privatnosti</strong></a>.
+                                </p>
+                            </div>
+
+
+                            @if ($status)
+                                <div class="theme-notice-wrap">
+                                    <div class="theme-notice m-3">{{ $status->status_color }}</div>
+                                </div>
+                            @endif
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-6 order-1 order-lg-2">
+                {{-- <div class="cart-items-list p-3">
+
+                    @foreach (session('cart', []) as $index => $item)
+                        <div class="row mb-3">
+                            <div class="col-4">
+                                <div class="position-relative">
+                                    <img src="{{ \App\Models\Product::where('id', $item['product_id'])->first()->image_path }} "
+                                        class="cart-image rounded">
+                                    <span class="qty-badge">
+                                        {{ $item['quantity'] }}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-8">
+                                <span
+                                    class="text-capitalize fw-bold">{{ \App\Models\Product::where('id', $item['product_id'])->first()->title }}
+
+                                </span>
+                                <h6>{{ number_format($item['price'], 2, ',', ' ') }} €</h6>
+                               
+                                <div>
+                                    @if (!empty($item['variants']))
+                                        @foreach ($item['variants'] as $v_id => $variant)
+                                            <div class="d-flex justify-content-between">
+                                                <div class="text-xs">
+                                                    {{ \App\Models\Variant::where('id', $variant)->first()?->value }}
+                                                    ({{ number_format(\App\Models\Variant::where('id', $variant)->first()?->price, 2, ',', ' ') }}
+                                                    €)
+                                                </div>
+                                                <div class="text-xs">
+                                                   
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    @endif
+                                </div>
+                                <div>
+                                    @if (!empty($item['choices']))
+                                        @foreach ($item['choices'] as $v_id => $variant)
+                                            <div class="d-flex justify-content-between">
+                                                <div class="text-xs">
+                                                    {{ \App\Models\ProductChoice::where('id', $variant)->first()?->getChoiceName()->Choice_name }}
+                                                    ({{ number_format(\App\Models\ProductChoice::where('id', $variant)->first()?->price, 2, ',', ' ') }}
+                                                    €)
+                                                </div>
+                                                <div class="text-xs">
+
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    @endif
+                                </div>
+                                <div class="">
+
+                                    <div class="">
+                                        <button class=" btn-0 text-danger clickable fw-bold text-uppercase txt-xs"
+                                            wire:click="removeCartItem('{{ $index }}')">
+                                            <span class="spinner-border spinner-border-sm" role="status" wire:loading
+                                                wire:target="removeCartItem('{{ $index }}')">
+                                                <span class="visually-hidden">Loading...</span>
+                                            </span>
+
+                                            X {{ __('Remove') }}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    @endforeach
+
+                </div> --}}
+                <div>
+                    {{-- new design for coupon --}}
+                    {{-- end new design coupon --}}
+                    {{-- <div class="mt-3 p-3">
+                            <h5 class="small">{{__('Recomendations')}}</h5>
+                            <div class="row">
+                                @if (count($recomendation) > 0)
+                                @foreach ($recomendation as $item)
+                                    
+                                <div class="col-4">
+                                    <div class="bg-white r-panel">
+                                       <a href="" class="">
+                                        <div class="rec-img">
+                                            <img src="{{ \App\Models\Product::where('id', $item->id)->first()->image_path }}" alt="">
+                                          
+                                        </div>
+                                       <div class="p-2">
+                                         <small>
+                                            Smash burger
+                                        </small>
+                                       </div>
+                                       </a>
+                                    </div>
+                                </div>
+                                @endforeach
+                                @endif
+                               
+                                
+                                
+                               
+                            </div>
+                    </div> --}}
+
+                    @if ($user_points >= $min_coupon_limit)
+                        <div class="p-3">
+                             <div class="bg-dark p-3 rounded">
+                                        <h6>{{ __('Coupon Balance:') }}</h6>
+                                        <h3 class="fw-bold theme-text-color">
+                                             {{ $user_points ?? 0 }} 
+                                        </h3>
+                                         <small class="theme-badge mt-0"><i class="bi bi-check2"></i> {{ __('You can apply for 10% discount') }}</small>
+                                        <p class="small text-muted">{{ __('For every burger you purchase, you’ll receive one coupon. Once you collect 10 coupons, you become eligible for a 10% discount on your next order') }}</p>
+                                         <div class="d-flex justify-content-between">
+                                    <label for="apple-switch" class="text-white">{{ __('Apply Coupon') }}</label>
+                                    <input id="apple-switch" class="apple-switch" type="checkbox"
+                                        wire:model.live="pay_coupon" value="1" wire:click="payCoupon">
+
+
+
+                                </div>
+                                    </div>
+
+                            {{-- <div class="cou-switch p-3 bg-white rounded">
+                                <div class="mb-2">
+                                    <span class="text-success small txt-xs">
+                                        <span class="mb-0 h6 text-uppercase"
+                                            style="font-size: 14px;font-weight:800;lettr-space:2px">{{ __('Coupon Balance:') }}
+                                            {{ number_format($user_points, 0) }}</span> <br />
+                                        <small
+                                            class="text-muted mt-0">{{ __('You can apply for 10% discount') }}</small>
+                                    </span>
+                                   
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <label for="apple-switch">{{ __('Apply Coupon') }}</label>
+                                    <input id="apple-switch" class="apple-switch" type="checkbox"
+                                        wire:model.live="pay_coupon" value="1" wire:click="payCoupon">
+
+
+
+                                </div>
+                            </div> --}}
+                            <div>
+                                <p class="placeholder-glow w-100 rounded" wire:loading wire:target="payCoupon">
+                                    <span class="placeholder col-12 rounded"></span>
+                                </p>
+                            </div>
+                            @if ($pay_coupon)
+                                <div class="theme-badge mt-2">
+                                    {{-- <i class="bi bi-exclamation-triangle-fill"></i> --}}
+                                    <span>{{ __('You have applied a 10% discount using all 10 of your coupons') }}</span>
+
+                                </div>
+                            @endif
+                        @else
+                            <div class="p-3 row">
+                                <div class="col-12">
+                                    {{-- <span
+                                        class="badge bg-danger-subtle border border-danger-subtle text-danger-emphasis rounded-pill">
+                                        {{ __('Coupon Balance:') }} {{ $user_points }} |
+                                        {{ __('Not enough coupons for disccount') }}
+                                    </span> --}}
+                                    <div class="bg-dark p-3 rounded">
+                                        <h6>{{ __('Coupon Balance:') }}</h6>
+                                        <h3 class="fw-bold theme-text-color">
+                                             {{ $user_points ?? 0 }} 
+                                        </h3>
+                                        <p class="dark-warning-alert"><i class="bi bi-exclamation-triangle-fill"></i> {{ __('Not enough coupons for disccount') }}</p>
+                                        <p class="small text-muted">{{ __('For every burger you purchase, you’ll receive one coupon. Once you collect 10 coupons, you become eligible for a 10% discount on your next order') }}</p>
+
+                                    </div>
+
+                                </div>
+                                {{-- <div class="col-3 d-flex flex-row-reverse">
+
+
+
+                                </div> --}}
+                            </div>
+                            {{-- <div class="p-3">
+                                <div class="bg-dark p-3 rounded">
+                                    <p>{{ __('For every burger you purchase, you’ll receive one coupon. Once you collect 10 coupons, you become eligible for a 10% discount on your next order') }}
+                                    </p>
+                                </div>
+                            </div> --}}
+
+                    @endif
+
+                    <div class="p-3">
+                        <div class="d-flex justify-content-between fw-normal">
+                            <div>
+                                <span>{{ __('Sub Total') }}</span>
+
+                            </div>
+                            <div class="text-right">
+                                <span>{{ number_format($grand_total, 2, ',', ' ') }} €</span>
+
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between fw-normal">
+                            <div>
+                                <span>{{ __('Discount') }} ({{ $discount . '%' }})</span>
+
+                            </div>
+                            <div class="text-right">
+                                <span> {{ number_format($discount_value, 2, ',', ' ') }} € </span>
+
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between fw-normal mb-3">
+                            <div>
+                                <span>{{ __('Delivery') }}</span>
+
+                            </div>
+                            <div class="text-right">
+                                <span> {{ number_format(0, 2, ',', ' ') }} €</span>
+
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between fw-bold">
+                            <div>
+                                <h5 class="fw-bolder">{{ __('Net Total') }}</h5>
+
+                            </div>
+                            <div class="text-right">
+                                <h5 class="fw-bolder theme-text-color"> {{ number_format($net_total, 2, ',', ' ') }} €</h5>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @else
+        <div class="empty-cart-list">
+            <div>
+                <h3 class="text-muted">{{ __('Your bag is empty') }} 😢</h3>
+                <div class="d-flex justify-content-center">
+                    <a href="{{ route('shop.index') }}" class="btn btn-dark mt-3">{{ __('Shop') }}</a>
+                </div>
+            </div>
+        </div>
+    @endif
+    {{-- fixed message bar --}}
+    {{-- @if ($success_message || $error_message)
+            <div class="fixed-message-bar">
+                <div>
+                    @if ($success_message)
+                        <small x-data x-init="setTimeout(() => $wire.set('success_message', ''), 3000)" class="text-success font-weight-bold d-block mt-2">
+                            <i class="bi bi-check-circle-fill"></i> {{ $success_message }}
+                        </small>
+                    @endif
+                    @if ($error_message)
+                        <small x-data x-init="setTimeout(() => $wire.set('error_message', ''), 3000)" class="text-danger font-weight-bold d-block mt-2">
+                            <i class="bi bi-exclamation-circle-fill"></i> {{ $error_message }}
+                        </small>
+                    @endif
+                </div>
+            </div>
+        @endif --}}
+    {{--  --}}
+</div>
+       </div>
+</div>
+

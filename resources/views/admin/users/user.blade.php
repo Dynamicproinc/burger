@@ -1,0 +1,67 @@
+@extends('admin.layout')
+@section('title', 'Users')
+
+@section('content')
+<div class="container mt-3">
+<div class="d-flex justify-content-between">
+   <div>
+    <form action="{{route('admin.users.users')}}" method="GET">
+       
+        <div class="form-group">
+        <input type="text" name="q" placeholder="{{__('Search here...')}}" class="form-control" value="{{request('q')}}">
+    </div>
+    </form>
+   </div>
+   <div> <a href="{{ route('admin.users.extractemails') }}" class="btn btn-primary mb-3">{{ __('Extract Emails') }}</a></div>
+</div>
+    @if ($users->total() > 0)
+
+        <table class="table caption-top">
+            <caption>List of users</caption>
+
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">{{ __('Registered at') }}</th>
+                    <th scope="col">{{ __('Avatar') }}</th>
+                    <th scope="col">{{ __('First Name') }}</th>
+                    <th scope="col">{{ __('Last Name') }}</th>
+                    <th scope="col">{{ __('Email') }}</th>
+                    <th scope="col">{{ __('Points') }}</th>
+                    <th scope="col">{{ __('QR Code') }}</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach ($users as $item)
+                    <tr>
+                        <th scope="row">{{ $item->id }}</th>
+                        <td>{{ $item->created_at }}</td>
+                        <td>
+                            <img src="{{ $item->avatar }}" class="xs-avatar" alt="{{$item->name}}">
+                        </td>
+                        <td>{{ \Illuminate\Support\Str::limit($item->name, 20) }}</td>
+                        <td>{{ \Illuminate\Support\Str::limit($item->last_name, 20) }}</td>
+                        <td>{{ $item->email }}</td>
+                        <td>{{ number_format($item->getPointBalance()?->balance ?? 0) }}</td>
+                        <td>{{ $item->getQR()?->slug ?? 'n/a' }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+
+        {{-- Pagination --}}
+        <div class="mt-3">
+            {{ $users->links() }}
+        </div>
+
+    @else
+
+        <div class="alert alert-info">
+            {{ __('No users found.') }}
+        </div>
+
+    @endif
+
+</div>
+@endsection
